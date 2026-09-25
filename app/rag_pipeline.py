@@ -32,9 +32,11 @@ class RAGPipeline:
 
     def answer(self, question: str) -> QueryResult:
         question_embedding = self.embed_fn(question)
-        hits = self.vectorstore.query(question_embedding, top_k=settings.TOP_K)
+        hits = self.vectorstore.query(question_embedding, top_k=settings.TOP_K, query_text=question)
 
-        if not hits or hits[0]["similarity"] < settings.SIMILARITY_THRESHOLD:
+        max_similarity = max((h.get("max_similarity", h["similarity"]) for h in hits), default=0.0)
+        keyword_overlap = max((h.get("keyword_overlap", 0) for h in hits), default=0)
+        if not hits or (max_similarity < settings.SIMILARITY_THRESHOLD and keyword_overlap < 3):
             logger.info("Guardrail triggered: top similarity below threshold")
             return QueryResult(answer=FALLBACK_MESSAGE)
 

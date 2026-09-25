@@ -10,10 +10,10 @@ class Settings(BaseSettings):
     GROQ_MODEL: str = "openai/gpt-oss-20b"
 
     EMBEDDING_MODEL: str = "all-MiniLM-L6-v2"
-    CHUNK_SIZE: int = 500
-    CHUNK_OVERLAP: int = 50
-    TOP_K: int = 3
-    SIMILARITY_THRESHOLD: float = 0.6
+    CHUNK_SIZE: int = 250
+    CHUNK_OVERLAP: int = 40
+    TOP_K: int = 6
+    SIMILARITY_THRESHOLD: float = 0.45
 
     CHROMA_DIR: str = "./chroma_db"
     COLLECTION_NAME: str = "docusense"
